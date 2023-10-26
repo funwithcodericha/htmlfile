@@ -1,4 +1,4 @@
-
+/*
 var header = document.querySelector('#main-header');
 header.style.borderBottom = 'solid 4px #ccc';
 var input = document.querySelector('input');
@@ -20,4 +20,7 @@ var even = document.querySelectorAll('li:nth-child(even)');
 for(var i =0;i<odd.length;i++){
     odd[i].style.backgroundColor = '#f4f4f4';
     even[i].style.backgroundColor = '#ccc'
-}
+}*/
+// parent node
+let itemList = document.querySelector('#item')
+console.log(itemList.parentNode)
