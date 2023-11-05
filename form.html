@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Details Form</title>
+</head>
+<body>
+    <h1>User Details Form</h1>
+    <form id="userForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <button type="button" onclick="addUser()">Add User</button>
+    </form>
+    <br>
+    <h2>Users:</h2>
+    <ul id="userList">
+    </ul>
+
+    <script>
+        function addUser() {
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+
+            if (username && email) {
+                // Get existing user data from local storage
+                const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+                // Create a new user object
+                const newUser = { username, email };
+
+                // Add the new user to the existing users
+                existingUsers.push(newUser);
+
+                // Update the local storage with the updated user list
+                localStorage.setItem("users", JSON.stringify(existingUsers));
+
+                // Clear the form
+                document.getElementById("userForm").reset();
+
+                // Update the user list on the page
+                displayUsers();
+            } else {
+                alert("Both username and email are required.");
+            }
+        }
+
+        function displayUsers() {
+            const userList = document.getElementById("userList");
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+
+            userList.innerHTML = ""; // Clear the existing list
+
+            users.forEach((user, index) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `User ${index + 1}: Username: ${user.username}, Email: ${user.email}`;
+                userList.appendChild(listItem);
+            });
+        }
+
+        // Display initial users
+        displayUsers();
+    </script>
+</body>
+</html>
