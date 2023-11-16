@@ -26,14 +26,27 @@
       <li class="list-group-item">Item 2</li>
       <li class="list-group-item">Item 3</li>
       <li class="list-group-item">Item 4</li>
+      <li>item 5</li>
+      
     </ul>
+
    </div>
   </div>
   <script>
-    let header = document.getElementById('main-header');
-    header.style.borderBottom = "solid 3px #000"
-    let third = document.querySelector('.list-group-item:nth-child(3)')
-    third.style.backgroundColor = "green"
+    // let header = document.getElementById('main-header');
+    // header.style.borderBottom = "solid 3px #000"
+    // let third = document.querySelector('.list-group-item:nth-child(3)')
+    // third.style.backgroundColor = "green"
+    // let newli  = document.createElement('li')
+    // newli.className = "list-group-item"
+    // console.log(newli)
+  // var itemlist = document.querySelector('.list-group')
+  // itemlist.style.color = "red"
+  let itemlist = document.getElementsByTagName('li')
+  itemlist[4].className = 'list-group-item'
+  
+  
+
    
     
   </script>
