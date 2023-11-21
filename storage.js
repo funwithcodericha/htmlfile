@@ -11,12 +11,22 @@ function savetolocalstorage(event) {
 
     }
     localStorage.setItem(obj.name,JSON.stringify(obj))
-    showuseronscreen()
+    showuseronscreen(obj)
 
 }
 function showuseronscreen(obj) {
     const parentelem  = document.getElementById('listofitems')
     const childelem = document.createElement('li')
     childelem.textContent = obj.name + '_' + obj.email + '_' + obj.phonenumber
-    parentelem.appendChild(childelem);
+    
+    const deletebutton = document.createElement('input');
+    deletebutton.type = 'button';
+    deletebutton.value = 'delete';
+    deletebutton.onclick = () => {
+        localStorage.removeItem(obj.name);
+        parentelem.removeChild(childelem);
+    }
+
+    childelem.appendChild(deletebutton);
+    parentelem.appendChild(childelem)
 }
