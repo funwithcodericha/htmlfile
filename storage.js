@@ -26,7 +26,16 @@ function showuseronscreen(obj) {
         localStorage.removeItem(obj.name);
         parentelem.removeChild(childelem);
     }
+    const editbutton = document.createElement('input')
+    editbutton.type = 'button';
+    editbutton.value = 'edit';
+    editbutton.onclick = () => {
+        localStorage.removeItem(obj.name);
+        parentelem.removeChild(childelem)
+    }
+
 
     childelem.appendChild(deletebutton);
+    childelem.appendChild(editbutton);
     parentelem.appendChild(childelem)
 }
