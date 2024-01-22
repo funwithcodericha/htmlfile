@@ -3,10 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>booking form</title>
 </head>
 <body>
-    richierich
-    <h1> richa thakur </h1>
+    <h1 style="color: rgb(109, 148, 19);">BOOKING APPOINTMENT FORM</h1>
+    <div class="center">
+        <form action="" onsubmit="savetolocalestorage(event)">
+            <label for="">Name</label>
+            <input type="text" name="name" value=""><br><br>
+            <label for="">Emailid</label>
+            <input type="email" name="emailid" value=""><br><br>
+            <label for="">Phone</label>
+            <input type="tel" name="phone" value="">
+            <button>submit</button>
+        </form>
+        <ul id="lists"></ul>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.min.js"></script>
+    <script>
+        function savetolocalestorage(event){
+            event.preventDefault();
+            const name= event.target.name.value;
+            const email = event.target.emailid.value;
+            const phone = event.target.phone.value;
+            const obj = {
+                name,
+                email,
+                phone
+            }
+            axios.post("https://crudcrud.com/api/10e50dfb5f034074abf7459553cc4664/appoinmentform",obj)
+            .then((response)=>{
+                showuseronscreen(response.data)
+                console.log(response)
+            })
+            .catch((err)=>{
+                console.error(err)
+                alert("Failed to save data. Please try again.");
+            })
+            //localStorage.setItem(obj.name,JSON.stringify(obj));
+            //showuseronscreen(obj)
+            event.target.reset();
+        }
+        function showuseronscreen(response){
+            const parentelem = document.getElementById("lists");
+            const childelem = document.createElement("li");
+            childelem.textContent = response.name + " " + response.email + " " + response.phone
+
+            const delbutton = document.createElement("input");
+            delbutton.type = "button";
+            delbutton.value = "delete";
+            delbutton.onclick = ()=>{
+                //localStorage.removeItem(response.name);
+                parentelem.removeChild(childelem)
+            }
+
+            const editbutton = document.createElement("input");
+            editbutton.type = "button";
+            editbutton.value = "edit";
+            editbutton.onclick = ()=>{
+                //localStorage.removeItem(response.name);
+                alert(`Edit: ${response.name} ${response.email} ${response.phone}`);
+                //parentelem.removeChild(childelem)
+            }
+
+            childelem.appendChild(delbutton);
+            childelem.appendChild(editbutton)
+            parentelem.appendChild(childelem)
+        }
+    </script>
 </body>
 </html>
