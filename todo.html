@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Todo App</title>
+</head>
+<body>
+
+    <div class="todo-container">
+        <h1>Todo App</h1>
+        <div class="form-container">
+            <label for="todoName">Todo Name:</label>
+            <input type="text" id="todoName" placeholder="Enter todo name">
+
+            <label for="todoDescription">Todo Description:</label>
+            <textarea id="todoDescription" placeholder="Enter todo description"></textarea>
+
+            <button onclick="addItem()">Add Todo</button>
+        </div>
+
+        <ul id="todoList"></ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="script.js"></script>
+</body>
+</html>
