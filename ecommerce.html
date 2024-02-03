@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Website</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<h1>E-commerce Website</h1>
+
+<div id="product-list">
+    <!-- Product list will be displayed here -->
+</div>
+
+<div>
+    <label for="productName">Product Name:</label>
+    <input type="text" id="productName">
+    
+    <label for="sellingPrice">Selling Price:</label>
+    <input type="number" id="sellingPrice">
+    
+    <button onclick="addItem()">Add Item</button>
+</div>
+
+<div>
+    <h2>Total Sum: <span id="totalSum">0</span></h2>
+</div>
+
+<script>
+    const CRUDCRUD_API_URL = 'https://crudcrud.com/api/76036e39d52541b3b2422b3152d607e0/ecommerce';
+
+    // Function to fetch products from the API
+    async function fetchProducts() {
+        try {
+            const response = await axios.get(CRUDCRUD_API_URL);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            return [];
+        }
+    }
+
+    // Function to update the local storage with products
+    function updateLocalStorage(products) {
+        localStorage.setItem('products', JSON.stringify(products));
+    }
+
+    // Function to get products from local storage
+    function getLocalStorageProducts() {
+        const storedProducts = localStorage.getItem('products');
+        return storedProducts ? JSON.parse(storedProducts) : [];
+    }
+
+    // Function to render the product list
+    function renderProductList() {
+        const productListDiv = document.getElementById("product-list");
+        productListDiv.innerHTML = "";
+
+        products.forEach(product => {
+            productListDiv.innerHTML += `
+                <div>
+                    <p>${product.name} - $${product.price}</p>
+                    <button onclick="removeItem('${product._id.$oid}')">Remove</button>
+                </div>
+            `;
+        });
+
+        updateTotalSum();
+    }
+
+    // Function to update the total sum
+    function updateTotalSum() {
+        const totalSumElement = document.getElementById("totalSum");
+        const totalSum = products.reduce((sum, product) => sum + product.price, 0);
+        totalSumElement.textContent = totalSum;
+    }
+
+    // Function to add an item
+    async function addItem() {
+        const productName = document.getElementById("productName").value;
+        const sellingPrice = parseFloat(document.getElementById("sellingPrice").value);
+
+        if (productName && !isNaN(sellingPrice) && sellingPrice > 0) {
+            const newProduct = {
+                name: productName,
+                price: sellingPrice,
+            };
+
+            try {
+                // Add the new product to the API
+                const response = await axios.post(CRUDCRUD_API_URL, newProduct);
+
+                // Add the product to the local products array
+                products.push(response.data);
+
+                // Update local storage
+                updateLocalStorage(products);
+
+                // Clear input fields
+                document.getElementById("productName").value = "";
+                document.getElementById("sellingPrice").value = "";
+
+                // Render the updated product list
+                renderProductList();
+            } catch (error) {
+                console.error('Error adding product:', error);
+            }
+        } else {
+            alert("Please enter valid product name and selling price.");
+        }
+    }
+
+    // Function to remove an item
+    async function removeItem(productId) {
+        try {
+            // Remove the product from the API
+            await axios.delete(`${CRUDCRUD_API_URL}/${productId}`);
+
+            // Remove the product from the local products array
+            products = products.filter(product => product._id.$oid !== productId);
+
+            // Update local storage
+            updateLocalStorage(products);
+
+            // Render the updated product list
+            renderProductList();
+        } catch (error) {
+            console.error('Error removing product:', error);
+        }
+    }
+
+    // Initial fetching and rendering
+    let products = getLocalStorageProducts();
+    fetchProducts().then(data => {
+        products = data;
+        updateLocalStorage(products); // Ensure local storage is up to date
+        renderProductList();
+    });
+</script>
+
+</body>
+</html>
